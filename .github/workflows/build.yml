@@ -2,6 +2,7 @@ name: Build Applications (macOS & Windows)
 
 on:
   push:
+    branches: [ main, master ]
     tags:
       - 'v*'
   workflow_dispatch:
@@ -52,6 +53,8 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         files: dist/GoProTelemetryExtractor.dmg
+        tag_name: ${{ github.ref_name != 'main' && github.ref_name != 'master' && github.ref_name || 'v1.0.0' }}
+        name: GoPro Telemetry Extractor ${{ github.ref_name != 'main' && github.ref_name != 'master' && github.ref_name || 'v1.0.0' }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -83,5 +86,7 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         files: dist/GoProTelemetryExtractor.exe
+        tag_name: ${{ github.ref_name != 'main' && github.ref_name != 'master' && github.ref_name || 'v1.0.0' }}
+        name: GoPro Telemetry Extractor ${{ github.ref_name != 'main' && github.ref_name != 'master' && github.ref_name || 'v1.0.0' }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
