@@ -52,10 +52,10 @@ jobs:
           "dist/GoProTelemetryExtractor.dmg" \
           "dist/GoProTelemetryExtractor.app" || true
 
-    - name: Vérifier la présence du fichier DMG
+    - name: Vérifier la génération du fichier DMG
       run: |
         if [ ! -f "dist/GoProTelemetryExtractor.dmg" ]; then
-          echo "Erreur: Le fichier DMG n'a pas été généré."
+          echo "ERREUR : Le fichier .dmg n'a pas été généré."
           exit 1
         fi
 
