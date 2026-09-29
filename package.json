@@ -8,6 +8,6 @@
     },
     "dependencies": {
         "gpmf-extract": "^0.2.1",
-        "gopro-telemetry": "^1.4.0"
+        "gopro-telemetry": "*"
     }
 }
