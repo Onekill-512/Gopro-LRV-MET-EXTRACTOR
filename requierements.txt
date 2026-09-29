@@ -1,0 +1,8 @@
+# Dépendances Python pour l'interface GUI
+tkinter
+
+pip install -r requirements.txt
+
+npm install
+
+python app_gui.py

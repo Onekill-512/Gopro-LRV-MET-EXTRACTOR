@@ -1,0 +1,60 @@
+name: Build macOS DMG
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-mac:
+    runs-on: macos-latest
+
+    steps:
+    - name: Récupérer le code
+      uses: actions/checkout@v4
+
+    - name: Configurer Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Configurer Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Installer les dépendances
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller
+        npm install
+        brew install create-dmg
+
+    - name: Compiler l'application (.app)
+      run: |
+        pyinstaller --noconsole --onefile \
+          --add-data "index_gpx.js:." \
+          --add-data "index_csv.js:." \
+          --add-data "node_modules:node_modules" \
+          --target-architecture universal2 \
+          --name "GoProTelemetryExtractor" \
+          app_gui.py
+
+    - name: Générer l'image disque (.dmg)
+      run: |
+        create-dmg \
+          --volname "GoPro Telemetry Extractor" \
+          --window-pos 200 120 \
+          --window-size 600 400 \
+          --icon-size 100 \
+          --icon "GoProTelemetryExtractor.app" 175 120 \
+          --hide-extension "GoProTelemetryExtractor.app" \
+          --app-drop-link 425 120 \
+          "dist/GoProTelemetryExtractor.dmg" \
+          "dist/GoProTelemetryExtractor.app"
+
+    - name: Téleverser le fichier .dmg généré
+      uses: actions/upload-artifact@v4
+      with:
+        name: GoProTelemetryExtractor-macOS
+        path: dist/GoProTelemetryExtractor.dmg

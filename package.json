@@ -1,0 +1,13 @@
+{
+    "name": "gopro-telemetry-extractor",
+    "version": "1.0.0",
+    "description": "Extraction et traitement de la télémétrie GoPro (.LRV) vers GPX et CSV pour OVRLEY",
+    "main": "index_csv.js",
+    "scripts": {
+        "start": "python app_gui.py"
+    },
+    "dependencies": {
+        "gpmf-extract": "^0.2.1",
+        "gopro-telemetry": "^1.4.0"
+    }
+}
