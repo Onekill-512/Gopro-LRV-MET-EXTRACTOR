@@ -28,6 +28,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install pyinstaller
         npm install
+        npm install gpmf-extract gopro-telemetry
         brew install create-dmg
 
     - name: Compiler l'application (.app)
