@@ -32,11 +32,12 @@ jobs:
         npm install gpmf-extract gopro-telemetry
         brew install create-dmg
 
-    - name: Télécharger le binaire Node.js autonome pour macOS
+    - name: Préparer le binaire Node.js autonome pour macOS
       run: |
         NODE_PATH=$(which node)
         cp "$NODE_PATH" ./node
         chmod +x ./node
+        xattr -d com.apple.quarantine ./node 2>/dev/null || true
 
     - name: Compiler .app et .dmg
       run: |
