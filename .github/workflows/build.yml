@@ -41,6 +41,9 @@ jobs:
           --name "GoProTelemetryExtractor" \
           app_gui.py
 
+        # Nettoyage des attributs de quarantaine macOS
+        xattr -cr "dist/GoProTelemetryExtractor.app" 2>/dev/null || true
+
         create-dmg \
           --volname "GoPro Telemetry Extractor" \
           --window-pos 200 120 \
