@@ -11,7 +11,7 @@ permissions:
   contents: write
 
 jobs:
-  # --- JOB 1 : MACOS (.dmg autonomes) ---
+  # --- JOB 1 : MACOS (.dmg) ---
   build-mac:
     runs-on: macos-latest
     steps:
@@ -32,17 +32,9 @@ jobs:
         npm install gpmf-extract gopro-telemetry
         brew install create-dmg
 
-    - name: Préparer le binaire Node.js autonome pour macOS
-      run: |
-        NODE_PATH=$(which node)
-        cp "$NODE_PATH" ./node
-        chmod +x ./node
-        xattr -d com.apple.quarantine ./node 2>/dev/null || true
-
     - name: Compiler .app et .dmg
       run: |
         pyinstaller --noconsole --onefile \
-          --add-binary "node:." \
           --add-data "index_gpx.js:." \
           --add-data "index_csv.js:." \
           --add-data "node_modules:node_modules" \
@@ -69,7 +61,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  # --- JOB 2 : WINDOWS (.exe autonome) ---
+  # --- JOB 2 : WINDOWS (.exe) ---
   build-windows:
     runs-on: windows-latest
     steps:
@@ -89,15 +81,9 @@ jobs:
         pip install pyinstaller
         npm install gpmf-extract gopro-telemetry
 
-    - name: Copier l'exécutable Node.js Windows
-      shell: powershell
-      run: |
-        $nodePath = (Get-Command node).Source
-        Copy-Item $nodePath -Destination .\node.exe
-
     - name: Compiler le .exe
       run: |
-        pyinstaller --noconsole --onefile --add-binary "node.exe;." --add-data "index_gpx.js;." --add-data "index_csv.js;." --add-data "node_modules;node_modules" --name "GoProTelemetryExtractor" app_gui.py
+        pyinstaller --noconsole --onefile --add-data "index_gpx.js;." --add-data "index_csv.js;." --add-data "node_modules;node_modules" --name "GoProTelemetryExtractor" app_gui.py
 
     - name: Publier le .exe sur GitHub Release
       uses: softprops/action-gh-release@v2
